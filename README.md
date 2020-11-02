@@ -1,22 +1,70 @@
-# ESP32_WiFi_SNIFF_BLE_ANDROID-APP_PathFinderLE_V01
-esp32 as wifi Sniffer connected via BLE to Android-App
+# PathFinderLE_V02
 
-Target is to create an APP ( Android ) to show my Location on a MAP ( openStreepMaps ? ).
-Arround ME on this Map i want  see in RealTime the amount of MobileDevices .
+![image](https://user-images.githubusercontent.com/37293282/97838122-d9a9ca00-1cdf-11eb-957b-64715ebd4b73.png)
 
-To detect and count those Mobile Devices we will use the ESP32 WEMOS Dev Kit.
+At its core, Pathfinder is a tool for **dynamic counting** and storage  of mobil devices motion-profiles
+Technically, the process is based on so-called WiFi-Beacons, Bluetooth beacons and BLE-C19-Exposure-Beacons.
+After a brief introduction to this technology, we will look at some example use cases.
 
-Basic setup:
 
-![image](https://user-images.githubusercontent.com/37293282/79842593-5535d080-83b9-11ea-8da9-753dad8b9c50.png)
 
-# ESP32 - Sniffing and first BLE DataTransfer:
+![image](https://user-images.githubusercontent.com/37293282/97839501-98ff8000-1ce2-11eb-8c8a-67c08e523eff.png)
 
-Developmentplatform for the esp32 we take VS2017 and vMicro. I recomment this combination as it provoides us some good advantage ( multi-monitoring / good android-Lib-handling etc..)
+We are surrounded by many devices that send out these beacons. Some send BlueTooth  .. some WiFi.
+PathFinder scans these beacons and saves them locally for further statistical analysis.
+PathFinder AND M5 ( an ESP32 Module ) form a very powerful PAIR - If M5 is NOT available, then our APP processes ONLY BT or BLE beacons.
+Via RSSI signal we derive a distance value from this in a mathematically prepared manner. Similar to the procedure we also know from the official Corona warning app (CWA) ). On this basis, PathFinder can also recognize an SDV (Social distancing Violation) and, if necessary, trigger further alarms.
 
-take care on some specific settings:
 
-![image](https://user-images.githubusercontent.com/37293282/79843948-46501d80-83bb-11ea-95ec-00de08015793.png)
+![image](https://user-images.githubusercontent.com/37293282/97839603-cb10e200-1ce2-11eb-8d45-d27e9df6e372.png)
+
+
+We summarize again briefly
+- PathFinder is essentially a **mobile device beacon signal scanner**
+- This procedure provides data. These are recorded and saved in a local database
+
+
+![image](https://user-images.githubusercontent.com/37293282/97839698-fabfea00-1ce2-11eb-89ae-3116bdc17a65.png)
+
+
+PathFinder already provides some very meaningful statistics ... like visitor statistics or people counting
+- Counting based on BT ( classic )
+- Counting based on BLE ( BT low Energy )
+- Counting on C19 Exposure-Notification-Beacons
+
+
+![image](https://user-images.githubusercontent.com/37293282/97839900-5db18100-1ce3-11eb-8bde-2da511924493.png)
+
+From our point of view the "**Market Density Indicator**" is a very strong UC 
+
+The scenario:
+In times of Corona we want to avoid very full supermarkets. And there are also long queues at the cash registers and no parking spaces in front of the market.
+
+In the Market  PathFinder works as a data provider. The data is sent to the backend in the cloud.. The supermarket customer ONLY needs the PathFinder APP to receive the Market Density-Information.
+
+
+
+# what do we need to run PathFinder?
+
+The PathFinder Android APP is self-sufficient!
+Does not need WiFi (Home LAN or something else..) - does not burden the data volume (from your provider)!
+
+The ESP32 Espresif MCU is required for PathFinder to scan  WiFi beacons - but not a MUST!
+
+**Pathfinder APP / WITHOUT M5 (ESP-32):**
+
+WiFi beacon scan is NOT done. This means that ONLY statistical evaluations are available for BT / BLE and EXPOSURE (C19).
+
+**Pathfinder APP / WITH M5 (ESP-32):**
+
+In this combination, ESP (e.g. M5) scans the WiFi. ESP periodically transmits the collected WiFi beacons via BT to the PathFinder APP.
+In the PathFinder APP, these scans are then stored in a SQlite DB for further processing.
+
+
+
+# Thanks for the sources of knowledge that I found on the web
+
+ESP32-Wifi-Beacon-Scanner:
 
 This sniffer example here base on some existing code i found on other GitHub-Repos here - thx-credidits to those!  some of them exist only in cpp. so they need some adaption to get compiled as INO. 
 
