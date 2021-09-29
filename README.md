@@ -1,6 +1,8 @@
-# PathFinderLE_V02
+# PathFinderLE  - M5 MODULE
 
-Complete Documentation please find here: https://github.com/iCounterBOX/ESP32_WiFi_SNIFF_BLE_ANDROID-APP_PathFinderLE_V01/wiki
+In THIS repo we have the INO code for the M5 Stick to measure (track) Mobile Devices and transfer those Data to the PathFinder APP.
+
+Repo for PathFinder APP: https://github.com/iCounterBOX/PathFinderLE-Android-APP
 
 ![image](https://user-images.githubusercontent.com/37293282/97838122-d9a9ca00-1cdf-11eb-957b-64715ebd4b73.png)
 
@@ -34,3 +36,72 @@ PathFinder already provides some very meaningful statistics ... like visitor sta
 - Counting based on BLE ( BT low Energy )
 - Counting on C19 Exposure-Notification-Beacons
 
+
+
+
+
+# what do we need to run PathFinder?
+
+The PathFinder Android APP is self-sufficient!
+Does not need WiFi (Home LAN or something else..) - does not burden the data volume (from your provider)!
+
+The ESP32 Espresif MCU is required for PathFinder to scan  WiFi beacons - but not a MUST!
+
+**Pathfinder APP / WITHOUT M5 (ESP-32):**
+
+WiFi beacon scan is NOT done. This means that ONLY statistical evaluations are available for BT / BLE and EXPOSURE (C19).
+
+**Pathfinder APP / WITH M5 (ESP-32):**
+
+In this combination, ESP (e.g. M5) scans the WiFi. ESP periodically transmits the collected WiFi beacons via BT to the PathFinder APP.
+In the PathFinder APP, these scans are then stored in a SQlite DB for further processing.
+
+
+# Some (possible) UseCases
+
+![image](https://user-images.githubusercontent.com/37293282/97839900-5db18100-1ce3-11eb-8bde-2da511924493.png)
+
+From our point of view the "**Market Density Indicator**" is a very strong UC 
+
+The scenario:
+In times of Corona we want to avoid very full supermarkets. And there are also long queues at the cash registers and no parking spaces in front of the market.
+
+In the Market  PathFinder works as a data provider. The data is sent to the backend in the cloud.. The supermarket customer ONLY needs the PathFinder APP to receive the Market Density-Information.
+
+
+
+
+# Thanks for the sources of knowledge that I found on the web
+
+ESP32-Wifi-Beacon-Scanner:
+
+This sniffer example here base on some existing code i found on other GitHub-Repos here - thx-credidits to those!  some of them exist only in cpp. so they need some adaption to get compiled as INO. 
+
+ETS-PoliTO / esp32-sniffer  https://github.com/ETS-PoliTO/esp32-sniffer/blob/master/main/main.c  
+ESP32 WiFi MAC Scanner/Sniffer (promiscuous): https://www.hackster.io/p99will/esp32-wifi-mac-scanner-sniffer-promiscuous-4c12f4
+ESP32 – WiFi sniffer: https://blog.podkalicki.com/esp32-wifi-sniffer/
+
+Another code source is from my study of beacon-scan via the NODE MCU ESP8266..documented here on my Github.
+
+Quite new for me is this BLE-Topoic as the NodeMCU does not have the BLE on board. BLE is a very huge lib. we need to take care to have the right settings..otherwise it cannot be compiled ( err: code is too big ..)
+
+![image](https://user-images.githubusercontent.com/37293282/79845188-f8d4b000-83bc-11ea-8fa2-819493c353c6.png)
+
+**Release/Version-Log:**
+
+Sept. 2021: 
+* some update concerning Android-Libs to get compiled in android studio  
+* moved the PathFinder-Code to: https://github.com/iCounterBOX/PathFinderLE-Android-APP
+
+PathFinder_V2:
+* new function FREEZE ( freeze the beacons arround you in a DB - any NEW device will trigger an Alarm)
+* Covid19 / Contact Tracing Beacons / Exposure Notification ( Strong for counting as well )
+* GEO-MAP-View - Devices that are close to PathFinder are displayed in RealTime on a map
+* Visitor-History-Graph - Shows the number of devices over time
+* Backup - The user saves all SQlite data collected by PathFinder on the SD
+
+
+
+PathFinder_V1:
+* first working-together between ESP32 and pLE-APP
+* basic research + learning
